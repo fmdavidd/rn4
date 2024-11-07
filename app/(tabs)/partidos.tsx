@@ -1,75 +1,73 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import Navbar from '@/components/Navbar';
-import * as Notifications from 'expo-notifications';
 
 export default function HomeScreen() {
-  const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
+  const torneos = [
+    {
+      id: 1,
+      nombre: 'Nombre Equipo',
+      imagen: 'https://i.imgur.com/iAkWUrw.jpeg',
+      descripcion: 'Descripción'
+    },
+    {
+      id: 2,
+      nombre: 'Nombre Equipo',
+      imagen: 'https://i.imgur.com/iAkWUrw.jpeg',
+      descripcion: 'Descripción'
+    },
+    {
+      id: 3,
+      nombre: 'Nombre Equipo',
+      imagen: 'https://i.imgur.com/iAkWUrw.jpeg',
+      descripcion: 'Descripción'
+    },
+    {
+      id: 4,
+      nombre: 'Nombre Equipo',
+      imagen: 'https://i.imgur.com/iAkWUrw.jpeg',
+      descripcion: 'Descripción'
+    },
+    {
+      id: 5,
+      nombre: 'Nombre Equipo',
+      imagen: 'https://i.imgur.com/iAkWUrw.jpeg',
+      descripcion: 'Descripción'
+    },
+    {
+      id: 6,
+      nombre: 'Nombre Equipo',
+      imagen: 'https://i.imgur.com/iAkWUrw.jpeg',
+      descripcion: 'Descripción'
+    },
+  ];
 
-  useEffect(() => {
-    requestNotificationPermissions();
-  }, []);
-
-  const requestNotificationPermissions = async () => {
-    const { status } = await Notifications.getPermissionsAsync();
-    if (status !== 'granted') {
-      const { status: newStatus } = await Notifications.requestPermissionsAsync();
-      if (newStatus !== 'granted') {
-        Alert.alert('Error', 'Se requieren permisos de notificación para recibir actualizaciones.');
-      } else {
-        registerForPushNotificationsAsync();
-      }
-    } else {
-      registerForPushNotificationsAsync();
-    }
-  };
-
-  const registerForPushNotificationsAsync = async () => {
-    try {
-      const token = (await Notifications.getExpoPushTokenAsync()).data;
-      setExpoPushToken(token);
-      console.log('Expo Push Token:', token);
-    } catch (error) {
-      console.error('Error obteniendo el token de notificación:', error);
-    }
-  };
-
-  const sendPushNotification = async () => {
-    if (!expoPushToken) {
-      Alert.alert('Error', 'No se pudo obtener el token de notificación.');
-      return;
-    }
-
-    const message = {
-      to: expoPushToken,
-      sound: 'default',
-      title: 'Notificación desde Home',
-      body: '¡Tienes una nueva notificación!',
-      data: { someData: 'goes here' },
-    };
-
-    await fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Accept-encoding': 'gzip, deflate',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    });
-
-    Alert.alert('Notificación Enviada', 'La notificación ha sido enviada.');
-  };
+  const TorneoCard = ({ torneo }: { torneo: typeof torneos[0] }) => (
+    <TouchableOpacity style={styles.card}>
+      <Image 
+        source={{ uri: torneo.imagen }}
+        style={styles.cardImage}
+      />
+      <View style={styles.cardContent}>
+        <Text style={styles.cardTitle}>{torneo.nombre}</Text>
+        <Text style={styles.cardDescription}>{torneo.descripcion}</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
       <Navbar />
-      <View style={styles.content}>
-        <Text style={styles.title}>Inicio</Text>
-        <TouchableOpacity onPress={sendPushNotification} style={styles.notificationButton}>
-          <Text style={styles.buttonText}>Enviar Notificación</Text>
-        </TouchableOpacity>
+      <View style={styles.header}>
+        <Text style={styles.title}>Torneos</Text>
       </View>
+      <ScrollView style={styles.content}>
+        <View style={styles.grid}>
+          {torneos.map((torneo) => (
+            <TorneoCard key={torneo.id} torneo={torneo} />
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -79,26 +77,57 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  content: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
-    paddingTop: 20,
-    backgroundColor: '#fff',
+  header: {
+    padding: 16,
+    paddingBottom: 8,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#4a0b0b',
   },
-  notificationButton: {
-    backgroundColor: '#4a0b0b',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
+  content: {
+    flex: 1,
+    padding: 8,
   },
-  buttonText: {
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    padding: 8,
+  },
+  card: {
+    width: '48%',
+    marginBottom: 16,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  cardImage: {
+    width: '100%',
+    height: 120,
+    resizeMode: 'cover',
+  },
+  cardContent: {
+    padding: 8,
+    backgroundColor: 'rgba(74, 11, 11, 0.9)',
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
     color: '#fff',
-    fontSize: 18,
+    marginBottom: 4,
+  },
+  cardDescription: {
+    fontSize: 12,
+    color: '#fff',
   },
 });

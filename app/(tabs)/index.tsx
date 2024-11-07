@@ -13,12 +13,17 @@ export default function HomeScreen() {
           <Text style={styles.sectionLink}>ver todos</Text>
           <ScrollView horizontal>
             <View style={styles.card}>
-              <Image source={{ uri: 'https://i.imgur.com/example.jpg' }} style={styles.cardImage} />
+              <Image source={{ uri: 'https://i.imgur.com/iAkWUrw.jpeg' }} style={styles.cardImage} />
               <Text style={styles.cardTitle}>Nombre Torneo</Text>
               <Text style={styles.cardDescription}>Descripción</Text>
             </View>
             <View style={styles.card}>
-              <Image source={{ uri: 'https://i.imgur.com/example.jpg' }} style={styles.cardImage} />
+              <Image source={{ uri: 'https://i.imgur.com/iAkWUrw.jpeg' }} style={styles.cardImage} />
+              <Text style={styles.cardTitle}>Nombre Torneo</Text>
+              <Text style={styles.cardDescription}>Descripción</Text>
+            </View>
+            <View style={styles.card}>
+              <Image source={{ uri: 'https://i.imgur.com/iAkWUrw.jpeg' }} style={styles.cardImage} />
               <Text style={styles.cardTitle}>Nombre Torneo</Text>
               <Text style={styles.cardDescription}>Descripción</Text>
             </View>
@@ -26,20 +31,27 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.section}>
+          <View style={styles.pad}>
           <Text style={styles.sectionTitle}>Equipos</Text>
           <Text style={styles.sectionLink}>ver todos</Text>
           <ScrollView horizontal>
             <View style={styles.card}>
-              <Image source={{ uri: 'https://i.imgur.com/example.jpg' }} style={styles.cardImage} />
+              <Image source={{ uri: 'https://i.imgur.com/iAkWUrw.jpeg' }} style={styles.cardImage} />
+              <Text style={styles.cardTitle}>Nombre Equipo</Text>
+              <Text style={styles.cardDescription}>Descripción</Text>
+            </View>
+            <View style={styles.card} >
+              <Image source={{ uri: 'https://i.imgur.com/iAkWUrw.jpeg' }} style={styles.cardImage} />
               <Text style={styles.cardTitle}>Nombre Equipo</Text>
               <Text style={styles.cardDescription}>Descripción</Text>
             </View>
             <View style={styles.card}>
-              <Image source={{ uri: 'https://i.imgur.com/example.jpg' }} style={styles.cardImage} />
-              <Text style={styles.cardTitle}>Nombre Equipo</Text>
+              <Image source={{ uri: 'https://i.imgur.com/iAkWUrw.jpeg' }} style={styles.cardImage} />
+              <Text style={styles.cardTitle}>Nombre Torneo</Text>
               <Text style={styles.cardDescription}>Descripción</Text>
             </View>
           </ScrollView>
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -47,6 +59,9 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  pad:{
+    paddingBottom: 100,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -77,6 +92,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
     overflow: 'hidden',
     elevation: 3,
+    position: 'relative', // Asegurarse de que el gradiente cubra toda la tarjeta
+  },
+  gradient: {
+    position: 'absolute', // Ubicar el gradiente encima de la imagen
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: 10, // Asegurarse de que el gradiente tenga los bordes redondeados
   },
   cardImage: {
     width: '100%',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'; 
-import { StyleSheet, View, Text, Image, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons';
@@ -34,7 +34,7 @@ export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <Navbar />
-      <View style={styles.content}>
+      <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.profileImageContainer}>
           <Image source={{ uri: profileImage }} style={styles.profileImage} />
           <TouchableOpacity style={styles.cameraIconContainer} onPress={requestCameraPermission}>
@@ -63,7 +63,7 @@ export default function ProfileScreen() {
           <Text style={styles.statistic}>Tarjetas rojas: 100</Text>
           <Text style={styles.statistic}>Tarjetas Amarillas: 100</Text>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -71,12 +71,12 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0e3f3',
+    backgroundColor: '#fff',
   },
   content: {
-    flex: 1,
     alignItems: 'center',
     paddingTop: 20,
+    paddingBottom: 80, // Añadir espacio extra para evitar que el menú de abajo cubra el contenido
   },
   profileImageContainer: {
     position: 'relative',

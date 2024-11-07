@@ -31,6 +31,18 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1305fce0-3d68-4452-ad25-a38e51914a9d"
+      }
+    },
+    "owner": "fmdavid",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/1305fce0-3d68-4452-ad25-a38e51914a9d"
     }
   }
 }

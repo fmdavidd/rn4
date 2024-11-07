@@ -1,75 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, ScrollView, Image } from 'react-native';
 import Navbar from '@/components/Navbar';
-import * as Notifications from 'expo-notifications';
 
 export default function HomeScreen() {
-  const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    requestNotificationPermissions();
-  }, []);
-
-  const requestNotificationPermissions = async () => {
-    const { status } = await Notifications.getPermissionsAsync();
-    if (status !== 'granted') {
-      const { status: newStatus } = await Notifications.requestPermissionsAsync();
-      if (newStatus !== 'granted') {
-        Alert.alert('Error', 'Se requieren permisos de notificación para recibir actualizaciones.');
-      } else {
-        registerForPushNotificationsAsync();
-      }
-    } else {
-      registerForPushNotificationsAsync();
-    }
-  };
-
-  const registerForPushNotificationsAsync = async () => {
-    try {
-      const token = (await Notifications.getExpoPushTokenAsync()).data;
-      setExpoPushToken(token);
-      console.log('Expo Push Token:', token);
-    } catch (error) {
-      console.error('Error obteniendo el token de notificación:', error);
-    }
-  };
-
-  const sendPushNotification = async () => {
-    if (!expoPushToken) {
-      Alert.alert('Error', 'No se pudo obtener el token de notificación.');
-      return;
-    }
-
-    const message = {
-      to: expoPushToken,
-      sound: 'default',
-      title: 'Notificación desde Home',
-      body: '¡Tienes una nueva notificación!',
-      data: { someData: 'goes here' },
-    };
-
-    await fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Accept-encoding': 'gzip, deflate',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    });
-
-    Alert.alert('Notificación Enviada', 'La notificación ha sido enviada.');
-  };
-
   return (
     <View style={styles.container}>
       <Navbar />
-      <View style={styles.content}>
-        <Text style={styles.title}>Inicio</Text>
-        <TouchableOpacity onPress={sendPushNotification} style={styles.notificationButton}>
-          <Text style={styles.buttonText}>Enviar Notificación</Text>
-        </TouchableOpacity>
-      </View>
+      <ScrollView style={styles.content}>
+        
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Torneos</Text>
+          <Text style={styles.sectionLink}>ver todos</Text>
+          <ScrollView horizontal>
+            <View style={styles.card}>
+              <Image source={{ uri: 'https://i.imgur.com/example.jpg' }} style={styles.cardImage} />
+              <Text style={styles.cardTitle}>Nombre Torneo</Text>
+              <Text style={styles.cardDescription}>Descripción</Text>
+            </View>
+            <View style={styles.card}>
+              <Image source={{ uri: 'https://i.imgur.com/example.jpg' }} style={styles.cardImage} />
+              <Text style={styles.cardTitle}>Nombre Torneo</Text>
+              <Text style={styles.cardDescription}>Descripción</Text>
+            </View>
+          </ScrollView>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Equipos</Text>
+          <Text style={styles.sectionLink}>ver todos</Text>
+          <ScrollView horizontal>
+            <View style={styles.card}>
+              <Image source={{ uri: 'https://i.imgur.com/example.jpg' }} style={styles.cardImage} />
+              <Text style={styles.cardTitle}>Nombre Equipo</Text>
+              <Text style={styles.cardDescription}>Descripción</Text>
+            </View>
+            <View style={styles.card}>
+              <Image source={{ uri: 'https://i.imgur.com/example.jpg' }} style={styles.cardImage} />
+              <Text style={styles.cardTitle}>Nombre Equipo</Text>
+              <Text style={styles.cardDescription}>Descripción</Text>
+            </View>
+          </ScrollView>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -81,24 +53,45 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 20,
-    alignItems: 'center',
-    paddingTop: 20,
-    backgroundColor: '#fff',
+    paddingHorizontal: 20,
   },
-  title: {
-    fontSize: 24,
+  section: {
+    marginVertical: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#4a0b0b',
   },
-  notificationButton: {
-    backgroundColor: '#4a0b0b',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
+  sectionLink: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    fontSize: 14,
+    color: '#4a0b0b',
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    width: 150,
+    marginRight: 10,
+    overflow: 'hidden',
+    elevation: 3,
+  },
+  cardImage: {
+    width: '100%',
+    height: 100,
+  },
+  cardTitle: {
+    fontWeight: 'bold',
+    paddingHorizontal: 10,
+    paddingTop: 5,
+    fontSize: 14,
+    color: '#4a0b0b',
+  },
+  cardDescription: {
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+    color: '#555',
   },
 });
